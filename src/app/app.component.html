@@ -1,40 +1,23 @@
 <!--A: Generic String-->
 <div>
-  <h3>Generic Strings</h3>
-  <ic-select-search [items]="genericStringArray" [(wgrModel)]="selectedGenericString"></ic-select-search>
+  <ic-select-search placeholder="Strings" [items]="genericStringArray" [(wgrModel)]="selectedGenericString"></ic-select-search>
   <h3>Result: {{stringify(selectedGenericString)}}</h3>
 </div>
-
 <!--B: Display text-->
 <div>
-  <h3>Select Item Objects</h3>
-  <ic-select-search [items]="selectItemArray" [(wgrModel)]="selectedItemObject"></ic-select-search>
+  <ic-select-search placeholder="Select Items" [items]="selectItemArray" [(wgrModel)]="selectedItemObject"></ic-select-search>
   <h3>Result: {{stringify(selectedItemObject)}}</h3>
 </div>
 <!--C: Custom object-->
 <div>
-  <h3>Custom Objects</h3>
-  <ic-select-search style="display: block" (inputEvent)="parentSearch($event)" [(wgrModel)]="selectedCustomObject">
-    <mat-option *ngFor="let option of apiSearchResults" [value]="option">
-      <div style="display: inline">
-        {{option.Source}}
-      </div>
-      <div style="display: inline">
-        {{option.Value}}
-      </div>
-      <div style="display: inline">
-        {{option.Source}}
-      </div>
-      <div style="display: inline">
-        {{option.Value}}
-      </div>
-      <div style="display: block">
-        {{option.Source}}
-      </div>
-      <div style="display: block">
-        {{option.Value}}
-      </div>
-    </mat-option>
-  </ic-select-search>
+  <ic-select-search placeholder="Custom Objects" displayWith="Source" (inputEvent)="parentSearch($event)" [items]="apiSearchResults" [(wgrModel)]="selectedCustomObject" [option]="optionTemplate"></ic-select-search>
+  <ng-template #optionTemplate let-option="option">
+    <div>
+      {{option.Source}}
+    </div>
+    <div>
+      {{option.Value}}
+    </div>
+  </ng-template>
   <h3>Result: {{stringify(selectedCustomObject)}}</h3>
 </div>

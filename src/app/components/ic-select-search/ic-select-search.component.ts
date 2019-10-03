@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {filter, map, startWith} from "rxjs/operators";
 import {SelectItem} from "../../domain/select-item";
@@ -10,6 +10,9 @@ import {Observable, of} from "rxjs";
   styleUrls: ['./ic-select-search.component.scss']
 })
 export class IcSelectSearchComponent implements OnInit {
+
+  @Input('option')
+  optionTemplate: TemplateRef<any>;
 
   @Input()
   wgrModel: any;
@@ -23,6 +26,18 @@ export class IcSelectSearchComponent implements OnInit {
   @Input()
   items: Array<any>;
 
+  @Input()
+  secondaryText: any;
+
+  @Input()
+  displayWith : string;
+
+  @Input()
+  placeholder : string;
+
+  @Input()
+  panelWidth: string;
+
   formControl = new FormControl();
 
   generic: boolean = false;
@@ -33,18 +48,16 @@ export class IcSelectSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.inputEvent.observers.length < 1)
+    if (this.inputEvent.observers.length < 1) {
       this.generic = true;
+    }
 
     this.formControl.valueChanges.subscribe(value =>
     {
       if(this.isString(value)){
         this.updateWgrModel(null);
         value = value.toLowerCase();
-        if (this.generic)
-          this.genericFilterResults(value);
-        else
-          this.inputEvent.emit(value)
+        this.generic ? this.genericFilterResults(value) : this.inputEvent.emit(value)
       }
     });
   }
@@ -54,7 +67,7 @@ export class IcSelectSearchComponent implements OnInit {
     this.wgrModelChange.emit(this.wgrModel);
   }
 
-  public genericFilterResults(value: string) {
+  genericFilterResults(value: string) {
     this.genericFilteredOptions = this.items.filter((option: any) => {
       if (this.isSelectItem(option) && option.getDisplayText()) {
         return option.getDisplayText().toLowerCase().includes(value);
@@ -66,19 +79,23 @@ export class IcSelectSearchComponent implements OnInit {
     });
   }
 
-  public getDisplayText(option: any): string {
-    if(!option){
-      return '';
-    }
-     else if (typeof option === "string") {
-      return option;
-    }
-     else {
+  //Arrow function necessary for matautocomplete displayWith input
+  getDisplayText = (option: any) => {
+    if(!option)
+      return "";
+    else if(this.displayWith)
+      return option[this.displayWith];
+    else if(this.isSelectItem(option))
       return option.getDisplayText();
-    }
-  }
+    else if(this.isString(option))
+      return option;
+    else
+      return '';
+  };
 
   isSelectItem(object: any): boolean {
+    if(!object)
+      return false;
     return (object as SelectItem).getDisplayText !== undefined;
   }
 

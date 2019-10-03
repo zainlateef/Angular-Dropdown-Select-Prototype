@@ -2,16 +2,15 @@
   <input matInput
          [formControl]="formControl"
          [matAutocomplete]="auto"
+         [placeholder]="placeholder"
          (blur)="onBlur($event)"/>
   <button mat-button *ngIf="formControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
     <mat-icon>close</mat-icon>
   </button>
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayText" (optionSelected)="updateWgrModel($event.option.value)" [panelWidth]="'500px'">
-    <mat-option *ngFor="let option of genericFilteredOptions" [value]="option">
-      {{getDisplayText(option)}}
+  <mat-autocomplete #auto="matAutocomplete" [panelWidth]="panelWidth" [displayWith]="getDisplayText" (optionSelected)="updateWgrModel($event.option.value)">
+    <mat-option *ngFor="let option of (generic ? genericFilteredOptions : items)" [value]="option">
+      <span *ngIf="generic">{{getDisplayText(option)}}</span>
+      <ng-container *ngTemplateOutlet="optionTemplate;context:{option: option}"></ng-container>
     </mat-option>
-<!--    Weird, but necessary to get ng-content to show up-->
-    <mat-option style="visibility: hidden; height: 0" *ngIf="!generic" [value]="''"></mat-option>
-    <ng-content></ng-content>
   </mat-autocomplete>
 </mat-form-field>
