@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {SelectItem} from "./domain/select-item";
 import {Item} from "./domain/item";
-import {Rating} from "./domain/rating";
+import {Result} from "./domain/result";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,13 @@ import {Rating} from "./domain/rating";
 export class AppComponent implements OnInit {
   genericStringArray: Array<string> = ['Generic', 'Strings','Lorem', 'Ipsum'];
   selectItemArray: Array<SelectItem> = [new Item(1,"Anaconda"),new Item(2,"Barbacoa"), new Item(3,"Anthropological Finding")];
-  apiSearchResults: Array<Rating>;
+  dummySearchArray: Array<Result> = [
+    new Result("Crocodile","https://via.placeholder.com/150"),
+    new Result("Alligator", "https://via.placeholder.com/20" ),
+    new Result("Big Bird", "https://via.placeholder.com/100"),
+    new Result("Bald Guy", "https://via.placeholder.com/90"),
+    new Result("Zebra", "https://via.placeholder.com/70")];
+  searchResults: any;
 
   selectedGenericString: any;
   selectedItemObject: any;
@@ -23,12 +29,11 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parentSearch("star wars");
+    this.search("star wars");
   }
 
-  public async parentSearch(value) {
-    let data = await this.http.get("http://www.omdbapi.com/?t="+ value +"&apikey=733c8b39").toPromise();
-    this.apiSearchResults = data['Ratings'];
+  public async search(value) {
+    this.searchResults = this.dummySearchArray.filter( object => object.title.includes(value));
   }
 
   stringify(selectedCustomObject: any) {

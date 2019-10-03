@@ -56,8 +56,7 @@ export class IcSelectSearchComponent implements OnInit {
     {
       if(this.isString(value)){
         this.updateWgrModel(null);
-        value = value.toLowerCase();
-        this.generic ? this.genericFilterResults(value) : this.inputEvent.emit(value)
+        this.generic ? this.genericFilterResults(value.toLowerCase()) : this.inputEvent.emit(value)
       }
     });
   }
@@ -94,9 +93,7 @@ export class IcSelectSearchComponent implements OnInit {
   };
 
   isSelectItem(object: any): boolean {
-    if(!object)
-      return false;
-    return (object as SelectItem).getDisplayText !== undefined;
+    return object ? (object as SelectItem).getDisplayText !== undefined : false;
   }
 
   isString(object: any): boolean {

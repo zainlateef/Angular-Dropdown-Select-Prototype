@@ -10,13 +10,13 @@
 </div>
 <!--C: Custom object-->
 <div>
-  <ic-select-search placeholder="Custom Objects" displayWith="Source" (inputEvent)="parentSearch($event)" [items]="apiSearchResults" [(wgrModel)]="selectedCustomObject" [option]="optionTemplate"></ic-select-search>
+  <ic-select-search placeholder="Custom Objects" displayWith="title" [panelWidth]="'500px'" (inputEvent)="search($event)" [items]="searchResults" [(wgrModel)]="selectedCustomObject" [option]="optionTemplate"></ic-select-search>
   <ng-template #optionTemplate let-option="option">
-    <div>
-      {{option.Source}}
+    <div style="background-color: lightblue">
+      <h3>{{option.title}}</h3>
     </div>
     <div>
-      {{option.Value}}
+      <img [src]="option.src">
     </div>
   </ng-template>
   <h3>Result: {{stringify(selectedCustomObject)}}</h3>
