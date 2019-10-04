@@ -1,22 +1,23 @@
 <!--A: Generic String-->
-<div>
+<div class="test">
   <ic-select-search placeholder="Strings" [items]="genericStringArray" [(wgrModel)]="selectedGenericString"></ic-select-search>
   <h3>Result: {{stringify(selectedGenericString)}}</h3>
 </div>
 <!--B: Display text-->
-<div>
+<div class="test">
   <ic-select-search placeholder="Select Items" [items]="selectItemArray" [(wgrModel)]="selectedItemObject"></ic-select-search>
   <h3>Result: {{stringify(selectedItemObject)}}</h3>
 </div>
 <!--C: Custom object-->
-<div>
-  <ic-select-search placeholder="Custom Objects" displayWith="title" [panelWidth]="'500px'" (inputEvent)="search($event)" [items]="searchResults" [(wgrModel)]="selectedCustomObject" [option]="optionTemplate"></ic-select-search>
+<div class="test">
+  <ic-select-search placeholder="Custom Objects" displayKey="title" [optionTemplate]="optionTemplate" [items]="searchResults"
+                    (inputEvent)="search($event)" [panelWidth]="'600px'" [(wgrModel)]="selectedCustomObject"></ic-select-search>
   <ng-template #optionTemplate let-option="option">
-    <div style="background-color: lightblue">
-      <h3>{{option.title}}</h3>
+    <div style="display: inline">
+      {{option.title}}
     </div>
-    <div>
-      <img [src]="option.src">
+    <div style="display: inline">
+      {{option.src}}}
     </div>
   </ng-template>
   <h3>Result: {{stringify(selectedCustomObject)}}</h3>

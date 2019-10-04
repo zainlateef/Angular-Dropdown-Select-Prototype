@@ -1,8 +1,6 @@
-import {Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {filter, map, startWith} from "rxjs/operators";
 import {SelectItem} from "../../domain/select-item";
-import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'ic-select-search',
@@ -11,7 +9,7 @@ import {Observable, of} from "rxjs";
 })
 export class IcSelectSearchComponent implements OnInit {
 
-  @Input('option')
+  @Input('optionTemplate')
   optionTemplate: TemplateRef<any>;
 
   @Input()
@@ -27,10 +25,7 @@ export class IcSelectSearchComponent implements OnInit {
   items: Array<any>;
 
   @Input()
-  secondaryText: any;
-
-  @Input()
-  displayWith : string;
+  displayKey : string;
 
   @Input()
   placeholder : string;
@@ -48,15 +43,12 @@ export class IcSelectSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.inputEvent.observers.length < 1) {
-      this.generic = true;
-    }
-
+    this.generic = this.inputEvent.observers.length < 1;
     this.formControl.valueChanges.subscribe(value =>
     {
       if(this.isString(value)){
         this.updateWgrModel(null);
-        this.generic ? this.genericFilterResults(value.toLowerCase()) : this.inputEvent.emit(value)
+        this.generic ? this.filterGenericOptions(value.toLowerCase()) : this.inputEvent.emit(value)
       }
     });
   }
@@ -66,9 +58,9 @@ export class IcSelectSearchComponent implements OnInit {
     this.wgrModelChange.emit(this.wgrModel);
   }
 
-  genericFilterResults(value: string) {
+  filterGenericOptions(value: string) {
     this.genericFilteredOptions = this.items.filter((option: any) => {
-      if (this.isSelectItem(option) && option.getDisplayText()) {
+      if (this.isSelectItem(option) && this.isString(option.getDisplayText())) {
         return option.getDisplayText().toLowerCase().includes(value);
       } else if (this.isString(option)) {
         return option.toLowerCase().includes(value);
@@ -78,12 +70,12 @@ export class IcSelectSearchComponent implements OnInit {
     });
   }
 
-  //Arrow function necessary for matautocomplete displayWith input
+  //Get getDisplayText is a matautocomplete input, and must be an arrow function to scope correctly
   getDisplayText = (option: any) => {
     if(!option)
       return "";
-    else if(this.displayWith)
-      return option[this.displayWith];
+    else if(this.displayKey)
+      return option[this.displayKey];
     else if(this.isSelectItem(option))
       return option.getDisplayText();
     else if(this.isString(option))
