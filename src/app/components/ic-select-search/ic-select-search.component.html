@@ -8,7 +8,7 @@
     <mat-icon>close</mat-icon>
   </button>
   <mat-autocomplete #auto="matAutocomplete" [panelWidth]="panelWidth" [displayWith]="getDisplayText" (optionSelected)="updateWgrModel($event.option.value)">
-    <mat-option *ngIf="showNull() [value]="null">None</mat-option>
+    <mat-option *ngIf="showNull()" [value]="null">None</mat-option>
     <mat-option style="height: unset" *ngFor="let option of options" [value]="option">
       <span *ngIf="generic">{{getDisplayText(option)}}</span>
       <ng-container *ngTemplateOutlet="optionTemplate;context:{option: option}"></ng-container>
