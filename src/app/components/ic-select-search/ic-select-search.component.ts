@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {Form, FormControl} from "@angular/forms";
+import {FloatLabelType} from "@angular/material/core";
 import {SelectItem} from "../../domain/select-item";
 
 @Component({
@@ -9,8 +10,29 @@ import {SelectItem} from "../../domain/select-item";
 })
 export class IcSelectSearchComponent implements OnInit {
 
-  @Input('optionTemplate')
-  optionTemplate: TemplateRef<any>;
+  @Input()
+  form: Form;
+
+  @Input()
+  type: string;
+
+  @Input()
+  errorKeys: string;
+
+  @Input()
+  floatLabel: FloatLabelType;
+
+  @Input()
+  name: string;
+
+  @Input()
+  required: boolean;
+
+  @Input()
+  disabled: boolean;
+
+  @Input()
+  placeholder: string;
 
   @Input()
   wgrModel: any;
@@ -18,17 +40,19 @@ export class IcSelectSearchComponent implements OnInit {
   @Output()
   wgrModelChange: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input('optionTemplate')
+  optionTemplate: TemplateRef<any>;
+
   @Output()
   inputEvent: EventEmitter<string> = new EventEmitter<string>();
 
   @Input()
-  items: Array<any>;
+  options: Array<any> = new Array<any>();
+
+  genericOptions: Array<any>;
 
   @Input()
-  displayKey : string;
-
-  @Input()
-  placeholder : string;
+  displayKey: string = "name";
 
   @Input()
   panelWidth: string;
@@ -37,16 +61,17 @@ export class IcSelectSearchComponent implements OnInit {
 
   generic: boolean = false;
 
-  genericFilteredOptions: Array<any>;
-
   constructor() {
   }
 
   ngOnInit(): void {
-    this.generic = this.inputEvent.observers.length < 1;
-    this.formControl.valueChanges.subscribe(value =>
-    {
-      if(this.isString(value)){
+    if (this.inputEvent.observers.length < 1) {
+      this.generic = true;
+      this.genericOptions = this.options.slice(0);
+    }
+
+    this.formControl.valueChanges.subscribe(value => {
+      if (this.isString(value)) {
         this.updateWgrModel(null);
         this.generic ? this.filterGenericOptions(value.toLowerCase()) : this.inputEvent.emit(value)
       }
@@ -59,29 +84,29 @@ export class IcSelectSearchComponent implements OnInit {
   }
 
   filterGenericOptions(value: string) {
-    this.genericFilteredOptions = this.items.filter((option: any) => {
-      if (this.isSelectItem(option) && this.isString(option.getDisplayText())) {
+    this.options = this.genericOptions.filter((option: any) => {
+      if (!option) {
+        return false;
+      } else if (this.isSelectItem(option) && this.isString(option.getDisplayText())) {
         return option.getDisplayText().toLowerCase().includes(value);
       } else if (this.isString(option)) {
         return option.toLowerCase().includes(value);
       } else {
-        return false;
+        return option.toString().includes(value);
       }
     });
   }
 
   //Get getDisplayText is a matautocomplete input, and must be an arrow function to scope correctly
   getDisplayText = (option: any) => {
-    if(!option)
+    if (!option)
       return "";
-    else if(this.displayKey)
-      return option[this.displayKey];
-    else if(this.isSelectItem(option))
+    else if (this.isSelectItem(option))
       return option.getDisplayText();
-    else if(this.isString(option))
+    else if (this.generic)
       return option;
     else
-      return '';
+      return option[this.displayKey];
   };
 
   isSelectItem(object: any): boolean {
@@ -94,7 +119,7 @@ export class IcSelectSearchComponent implements OnInit {
 
   clear() {
     this.formControl.setValue("");
-    if(this.wgrModel){
+    if (this.wgrModel) {
       this.updateWgrModel(null);
     }
   }
@@ -105,7 +130,11 @@ export class IcSelectSearchComponent implements OnInit {
     }
   }
 
-  isMatOptionEvent(event) : boolean {
+  isMatOptionEvent(event): boolean {
     return event.relatedTarget && event.relatedTarget.id.indexOf('mat-option') > -1
+  }
+
+  showNull() {
+    return this.options && this.options.length < 1
   }
 }

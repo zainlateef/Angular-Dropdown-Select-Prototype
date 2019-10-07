@@ -1,16 +1,21 @@
-<!--A: Generic String-->
+<!--Generic String-->
 <div class="test">
-  <ic-select-search placeholder="Strings" [items]="genericStringArray" [(wgrModel)]="selectedGenericString"></ic-select-search>
+  <ic-select-search placeholder="Strings" [options]="genericStringArray" [(wgrModel)]="selectedGenericString"></ic-select-search>
   <h3>Result: {{stringify(selectedGenericString)}}</h3>
 </div>
-<!--B: Display text-->
+<!--Generic Numbers-->
 <div class="test">
-  <ic-select-search placeholder="Select Items" [items]="selectItemArray" [(wgrModel)]="selectedItemObject"></ic-select-search>
+  <ic-select-search placeholder="Numbers" [options]="genericNumbersArray" [(wgrModel)]="selectedGenericNumber"></ic-select-search>
+  <h3>Result: {{stringify(selectedGenericNumber)}}</h3>
+</div>
+<!--Display text-->
+<div class="test">
+  <ic-select-search placeholder="Select Items" [options]="selectItemArray" [(wgrModel)]="selectedItemObject"></ic-select-search>
   <h3>Result: {{stringify(selectedItemObject)}}</h3>
 </div>
-<!--C: Custom object-->
+<!--Custom object-->
 <div class="test">
-  <ic-select-search placeholder="Custom Objects" displayKey="title" [optionTemplate]="optionTemplate" [items]="searchResults"
+  <ic-select-search placeholder="Custom Objects" displayKey="title" [optionTemplate]="optionTemplate" [options]="searchResults"
                     (inputEvent)="search($event)" [panelWidth]="'600px'" [(wgrModel)]="selectedCustomObject"></ic-select-search>
   <ng-template #optionTemplate let-option="option">
     <div style="display: inline">

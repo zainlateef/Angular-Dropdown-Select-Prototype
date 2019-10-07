@@ -11,6 +11,7 @@ import {Result} from "./domain/result";
 })
 export class AppComponent implements OnInit {
   genericStringArray: Array<string> = ['Generic', 'Strings','Lorem', 'Ipsum'];
+  genericNumbersArray: Array<number> = [1,2,3,200];
   selectItemArray: Array<SelectItem> = [new Item(1,"Anaconda"),new Item(2,"Barbacoa"), new Item(3,"Anthropological Finding"),
     new Item(1,"Ganaconda"),new Item(2,"XBarbacoa"), new Item(3,"XAnthropological Finding")];
   dummySearchArray: Array<Result> = [
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
   selectedGenericString: any;
   selectedItemObject: any;
   selectedCustomObject: any;
+  selectedGenericNumber: any;
 
   constructor(
     private http: HttpClient
