@@ -22,10 +22,10 @@ export class AppComponent implements OnInit {
     new Result("Zebra", "https://via.placeholder.com/70")];
   searchResults: any;
 
-  selectedGenericString: any;
-  selectedItemObject: any;
-  selectedCustomObject: any;
-  selectedGenericNumber: any;
+  selectedGenericString : string = this.genericStringArray[0];
+  selectedItemObject: SelectItem = this.selectItemArray[0];
+  selectedCustomObject: Result = this.dummySearchArray[0];
+  selectedGenericNumber: number = this.genericNumbersArray[0];
 
   constructor(
     private http: HttpClient

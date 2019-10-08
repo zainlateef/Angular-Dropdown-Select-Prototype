@@ -4,9 +4,9 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {IcSelectSearchComponent} from './components/ic-select-search/ic-select-search.component';
-import {MatFormFieldModule, MatAutocompleteModule, MatIconModule} from '@angular/material';
+import {MatFormFieldModule, MatAutocompleteModule, MatIconModule, MatDividerModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatInputModule} from "@angular/material/input";
 
@@ -19,8 +19,8 @@ import {MatInputModule} from "@angular/material/input";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatFormFieldModule, MatAutocompleteModule, MatIconModule, ReactiveFormsModule, MatInputModule,
-    HttpClientModule
+    MatFormFieldModule, MatAutocompleteModule, MatIconModule, ReactiveFormsModule, MatInputModule, MatDividerModule,
+    HttpClientModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

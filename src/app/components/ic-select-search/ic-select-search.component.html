@@ -12,6 +12,7 @@
     <mat-option style="height: unset" *ngFor="let option of options" [value]="option">
       <span *ngIf="generic">{{getDisplayText(option)}}</span>
       <ng-container *ngTemplateOutlet="optionTemplate;context:{option: option}"></ng-container>
+      <mat-divider *ngIf="divider"></mat-divider>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

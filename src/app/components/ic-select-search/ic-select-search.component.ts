@@ -57,6 +57,9 @@ export class IcSelectSearchComponent implements OnInit {
   @Input()
   panelWidth: string;
 
+  @Input()
+  divider : boolean = true;
+
   formControl = new FormControl();
 
   generic: boolean = false;
@@ -69,7 +72,7 @@ export class IcSelectSearchComponent implements OnInit {
       this.generic = true;
       this.genericOptions = this.options.slice(0);
     }
-
+    this.formControl.setValue(this.wgrModel);
     this.formControl.valueChanges.subscribe(value => {
       if (this.isString(value)) {
         this.updateWgrModel(null);
