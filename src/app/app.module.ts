@@ -9,6 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatInputModule} from "@angular/material/input";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -19,9 +20,10 @@ import {MatInputModule} from "@angular/material/input";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatFormFieldModule, MatAutocompleteModule, MatIconModule, ReactiveFormsModule, MatInputModule, MatDividerModule,
+    MatFormFieldModule, MatAutocompleteModule, MatIconModule, ReactiveFormsModule, MatInputModule, MatDividerModule, MatProgressSpinnerModule,
     HttpClientModule, FormsModule
   ],
+  exports: [MatIconModule],
   providers: [],
   bootstrap: [AppComponent]
 })

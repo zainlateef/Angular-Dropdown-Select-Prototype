@@ -15,7 +15,8 @@
 </div>
 <!--Custom object-->
 <div class="test">
-  <ic-select-search placeholder="Custom Objects" displayKey="title" [optionTemplate]="optionTemplate" [options]="searchResults"
+  <ic-select-search placeholder="Custom Objects" displayKey="title" [optionTemplate]="optionTemplate"
+                    [searchPromise]="searchResults"
                     (inputEvent)="search($event)" [panelWidth]="'600px'" [(wgrModel)]="selectedCustomObject"></ic-select-search>
   <ng-template #optionTemplate let-option="option">
     <div style="display: inline">

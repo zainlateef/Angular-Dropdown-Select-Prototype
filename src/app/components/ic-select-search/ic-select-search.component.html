@@ -2,14 +2,19 @@
   <input matInput
          [formControl]="formControl"
          [matAutocomplete]="auto"
+         [type]="type"
          [placeholder]="placeholder"
+         [attr.name]="name"
+         [required]="required"
+         [disabled]="disabled"
          (blur)="onBlur($event)"/>
-  <button mat-button *ngIf="formControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
+  <button mat-button *ngIf="showClear()" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
     <mat-icon>close</mat-icon>
   </button>
-  <mat-autocomplete #auto="matAutocomplete" [panelWidth]="panelWidth" [displayWith]="getDisplayText" (optionSelected)="updateWgrModel($event.option.value)">
+  <mat-spinner diameter="20" matSuffix *ngIf="loading"></mat-spinner>
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [panelWidth]="panelWidth" [displayWith]="getDisplayText" (optionSelected)="updateWgrModel($event.option.value)">
     <mat-option *ngIf="showNull()" [value]="null">None</mat-option>
-    <mat-option style="height: unset" *ngFor="let option of options" [value]="option">
+    <mat-option style="height: unset; white-space: unset" *ngFor="let option of options" [value]="option">
       <span *ngIf="generic">{{getDisplayText(option)}}</span>
       <ng-container *ngTemplateOutlet="optionTemplate;context:{option: option}"></ng-container>
       <mat-divider *ngIf="divider"></mat-divider>

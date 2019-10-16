@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angu
 import {Form, FormControl} from "@angular/forms";
 import {FloatLabelType} from "@angular/material/core";
 import {SelectItem} from "../../domain/select-item";
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 
 @Component({
   selector: 'ic-select-search',
@@ -46,6 +47,17 @@ export class IcSelectSearchComponent implements OnInit {
   @Output()
   inputEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  loading: boolean = false;
+
+  @Input()
+  set searchPromise(promise: Promise<any>) {
+    this.loading = true;
+    promise.then((data) => {
+      this.options = data.results;
+      this.loading = false;
+    })
+  }
+
   @Input()
   options: Array<any> = new Array<any>();
 
@@ -58,7 +70,7 @@ export class IcSelectSearchComponent implements OnInit {
   panelWidth: string;
 
   @Input()
-  divider : boolean = true;
+  divider: boolean = true;
 
   formControl = new FormControl();
 
@@ -73,7 +85,10 @@ export class IcSelectSearchComponent implements OnInit {
       this.genericOptions = this.options.slice(0);
     }
     this.formControl.setValue(this.wgrModel);
-    this.formControl.valueChanges.subscribe(value => {
+    this.formControl.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(value => {
       if (this.isString(value)) {
         this.updateWgrModel(null);
         this.generic ? this.filterGenericOptions(value.toLowerCase()) : this.inputEvent.emit(value)
@@ -130,6 +145,7 @@ export class IcSelectSearchComponent implements OnInit {
   onBlur(event) {
     if (!this.isMatOptionEvent(event) && !this.wgrModel) {
       this.formControl.setValue(null);
+      this.loading = false;
     }
   }
 
@@ -138,6 +154,10 @@ export class IcSelectSearchComponent implements OnInit {
   }
 
   showNull() {
-    return this.options && this.options.length < 1
+    return this.options && this.options.length < 1 && !this.loading
+  }
+
+  showClear() {
+    return this.formControl.value && !this.loading;
   }
 }

@@ -36,7 +36,13 @@ export class AppComponent implements OnInit {
   }
 
   public async search(value) {
-    this.searchResults = this.dummySearchArray.filter( object => object.title.includes(value));
+    this.searchResults = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve( {results : this.dummySearchArray.filter( object => object.title.includes(value))});
+      }, 2000)
+    })
+
+
   }
 
   stringify(selectedCustomObject: any) {
